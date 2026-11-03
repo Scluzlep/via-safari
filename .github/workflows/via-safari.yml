@@ -68,6 +68,7 @@ jobs:
           curl --fail --location --silent --show-error --retry 3 \
             -o "$RUNNER_TEMP/apktool.jar" \
             "https://github.com/iBotPeaches/Apktool/releases/download/v3.0.3/apktool_3.0.3.jar"
+          echo "dbf930b076c6b9be08d57c449cacefc3bdd6b71ebd59b3066fc0e1f5b14f9423  $RUNNER_TEMP/apktool.jar" | sha256sum -c -
           java -jar "$RUNNER_TEMP/apktool.jar" --version
       - name: Decode, change launcher branding, version and update URL, rebuild
         shell: bash
