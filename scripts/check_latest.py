@@ -21,7 +21,7 @@ def keep_schedule_alive_if_needed(build):
         return
     heartbeat = pathlib.Path(".github/last-active.txt")
     heartbeat.parent.mkdir(exist_ok=True)
-    heartbeat.write_text(f"{int(time.time())}\\n", encoding="utf-8")
+    heartbeat.write_text(f"{int(time.time())}\n", encoding="utf-8")
     subprocess.run(["git", "config", "user.name", "github-actions[bot]"], check=True)
     subprocess.run(["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"], check=True)
     subprocess.run(["git", "add", str(heartbeat)], check=True)
