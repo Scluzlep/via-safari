@@ -4,7 +4,7 @@ import json
 import os
 import pathlib
 import re
-import subprocess
+import urllib.error
 import urllib.request
 
 SOURCE = "https://res.viayoo.com/v1/latest_cn.json"
@@ -26,13 +26,23 @@ def main():
     pathlib.Path("work/upstream.json").write_text(
         json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    proc = subprocess.run(
-        ["gh", "release", "view", tag, "-R", os.environ["GITHUB_REPOSITORY"]],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        check=False,
+    repo = os.environ["GITHUB_REPOSITORY"]
+    token = os.environ["GH_TOKEN"]
+    release_req = urllib.request.Request(
+        f"https://api.github.com/repos/{repo}/releases/tags/{tag}",
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/vnd.github+json",
+            "User-Agent": "Via-Safari-Updater/1.0",
+        },
     )
-    build = proc.returncode != 0
+    try:
+        with urllib.request.urlopen(release_req, timeout=20):
+            build = False
+    except urllib.error.HTTPError as exc:
+        if exc.code != 404:
+            raise
+        build = True
     print(f"Official version={version}; release={tag}; need_build={build}")
     output = os.environ.get("GITHUB_OUTPUT")
     if output:
