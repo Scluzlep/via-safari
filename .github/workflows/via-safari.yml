@@ -4,6 +4,10 @@ on:
   # Lightweight check every six hours; APK build runs only for new versions.
   schedule:
     - cron: "27 */6 * * *"
+  # Automatically smoke-test and check when workflow configuration changes.
+  push:
+    paths:
+      - .github/workflows/via-safari.yml
   workflow_dispatch:
 
 permissions:
@@ -24,6 +28,8 @@ jobs:
       tag: ${{ steps.check.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
+      - name: Test APK patch logic without Android build tools
+        run: python3 -m unittest discover -s tests -v
       - name: Compare official Via version with version.env
         id: check
         env:
