@@ -77,6 +77,21 @@ jobs:
         run: |
           set -euo pipefail
           java -jar "$RUNNER_TEMP/apktool.jar" d -f "work/upstream.apk" -o work/decoded
+          # Guard against an upstream JSON updated before its APK download.
+          python3 - <<'PY'
+          import pathlib
+          import xml.etree.ElementTree as ET
+
+          expected = "${{ needs.check.outputs.version }}"
+          root = ET.parse("work/decoded/AndroidManifest.xml").getroot()
+          actual = root.get("{http://schemas.android.com/apk/res/android}versionCode")
+          version_name = root.get("{http://schemas.android.com/apk/res/android}versionName")
+          if root.get("package") != "mark.via":
+              raise ValueError(f"Unexpected official APK package: {root.get('package')}")
+          if actual != expected:
+              raise ValueError(f"Official JSON versionCode={expected}, but APK versionCode={actual}; refusing mismatched download")
+          print(f"Official Via APK verified: versionCode={actual}, versionName={version_name}")
+          PY
           python3 scripts/prepare_icon.py
           python3 scripts/patch_apk.py --decoded work/decoded --version "${{ needs.check.outputs.version }}"
           java -jar "$RUNNER_TEMP/apktool.jar" b work/decoded -o work/unsigned.apk
