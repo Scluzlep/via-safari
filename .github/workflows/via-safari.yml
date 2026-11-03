@@ -1,9 +1,9 @@
 name: Check and build Safari (Via CN)
 
 on:
-  # Two small JSON checks per week. Only new upstream versions trigger APK work.
+  # Lightweight check every six hours; APK build runs only for new versions.
   schedule:
-    - cron: "27 4 * * 2,5"
+    - cron: "27 */6 * * *"
   workflow_dispatch:
 
 permissions:
