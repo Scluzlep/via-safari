@@ -1,0 +1,15 @@
+# Build outputs and original APKs
+work/
+out/
+*.apk
+
+# Never commit signing private keys
+*.p12
+*.jks
+*.keystore
+*.pem
+*.key
+
+# Local Python files
+__pycache__/
+*.pyc
