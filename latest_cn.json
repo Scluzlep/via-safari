@@ -1,0 +1,6 @@
+{
+  "version": 20260823,
+  "changelog": "v7.3.3\n- 新增搜索快捷词功能\n- 视频播放方向新增跟随设备\n- 操作设定新增打开书签弹窗\n- 优先使用 HTTPS\n- 优化应用页面切换动画\n- 优化搜索建议\n- 优化元素过滤器的加载\n- 调整主页交互\n- 支持预测返回手势\n- 适配 Android16\n- 修复壁纸可能形变的问题\n- 部分错误修复",
+  "url": "https://github.com/Scluzlep/via-safari/releases/download/via-20260823/Safari.apk",
+  "md5": "8c73f768068754daad9d566225c3e0e0"
+}
