@@ -22,7 +22,7 @@ def main():
             if f.tell() > 40 * 1024 * 1024:
                 raise ValueError("APK exceeds sanity limit")
     content = OUT.read_bytes()
-    if not content.startswith(b"PK\\x03\\x04"):
+    if not content.startswith(b"PK\x03\x04"):
         raise ValueError("Downloaded object is not a ZIP/APK")
     md5 = hashlib.md5(content).hexdigest()
     expected = upstream.get("md5")
