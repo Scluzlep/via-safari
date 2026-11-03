@@ -4,10 +4,31 @@ import json
 import os
 import pathlib
 import re
+import subprocess
+import time
 import urllib.error
 import urllib.request
 
 SOURCE = "https://res.viayoo.com/v1/latest_cn.json"
+
+def keep_schedule_alive_if_needed(build):
+    """Avoid GitHub's 60-day inactivity auto-disable without an extra job."""
+    if build or os.environ.get("GITHUB_EVENT_NAME") != "schedule":
+        return
+    last = int(subprocess.check_output(
+        ["git", "log", "-1", "--format=%ct"], text=True).strip())
+    if time.time() - last < 45 * 86400:
+        return
+    heartbeat = pathlib.Path(".github/last-active.txt")
+    heartbeat.parent.mkdir(exist_ok=True)
+    heartbeat.write_text(f"{int(time.time())}\\n", encoding="utf-8")
+    subprocess.run(["git", "config", "user.name", "github-actions[bot]"], check=True)
+    subprocess.run(["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"], check=True)
+    subprocess.run(["git", "add", str(heartbeat)], check=True)
+    subprocess.run(["git", "commit", "-m", "chore: keep scheduled update check active"], check=True)
+    subprocess.run(["git", "push", "origin", "HEAD:main"], check=True)
+    print("Committed low-frequency heartbeat to prevent schedule auto-disable")
+
 
 def main():
     req = urllib.request.Request(SOURCE, headers={"User-Agent": "Via-Safari-Updater/1.0", "Accept": "application/json"})
@@ -44,6 +65,7 @@ def main():
             raise
         build = True
     print(f"Official version={version}; release={tag}; need_build={build}")
+    keep_schedule_alive_if_needed(build)
     output = os.environ.get("GITHUB_OUTPUT")
     if output:
         with open(output, "a", encoding="utf-8") as f:
