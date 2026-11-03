@@ -50,7 +50,7 @@ def main():
     tree.write(manifest, encoding="utf-8", xml_declaration=True)
 
     source = pathlib.Path("assets/safari26.png")
-    if source.read_bytes()[:8] != b"\\x89PNG\\r\\n\\x1a\\n":
+    if source.read_bytes()[:8] != b"\x89PNG\r\n\x1a\n":
         raise ValueError("Source icon is not PNG")
     target_dir = base / "res" / "drawable-nodpi"
     target_dir.mkdir(parents=True, exist_ok=True)
