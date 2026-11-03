@@ -5,7 +5,7 @@
 ## 自动更新
 
 - 每周二、周五 UTC 04:27（北京时间 12:27）仅检查一次 [Via 官方 JSON](https://res.viayoo.com/v1/latest_cn.json)。
-- 若对应的 GitHub Release 已存在，立即退出。只有上游有新版本时才下载 APK、反编译、重新打包、签名、发布。
+- 若对应的 GitHub Release 已存在，则跳过 APK 构建。只有上游有新版本时才下载 APK、反编译、重新打包、签名、发布。\n- 公开仓库定时任务可能在 60 天无活动后停止；已加入约 45 天一次的轻量保活提交，不额外触发 Action。
 - 获取 APK：[Via 官网下载地址](https://res.viayoo.com/v1/via-release-cn.apk)
 - 本地更新 JSON：[latest_cn.json](https://raw.githubusercontent.com/Scluzlep/via-safari/main/latest_cn.json)（首次成功发布后生成）。
 - 下载修改版：[Releases](../../releases)
