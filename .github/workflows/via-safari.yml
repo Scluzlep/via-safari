@@ -75,6 +75,7 @@ jobs:
         run: |
           set -euo pipefail
           java -jar "$RUNNER_TEMP/apktool.jar" d -f "work/upstream.apk" -o work/decoded
+          python3 scripts/prepare_icon.py
           python3 scripts/patch_apk.py --decoded work/decoded --version "${{ needs.check.outputs.version }}"
           java -jar "$RUNNER_TEMP/apktool.jar" b work/decoded -o work/unsigned.apk
           python3 - <<'PY'
