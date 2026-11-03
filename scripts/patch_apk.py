@@ -58,7 +58,7 @@ def main():
 
     yaml = base / "apktool.yml"
     y = yaml.read_text(encoding="utf-8")
-    y, num = re.subn(r"(?m)^(\s*versionCode:)\s*.*$", lambda m: m.group(1) + f" '{args.version}'", y)
+    y, num = re.subn(r"(?m)^(\s*versionCode:)\s*.*$", lambda m: m.group(1) + f" {args.version}", y)
     if num != 1:
         raise ValueError("apktool.yml versionCode not found or ambiguous")
     yaml.write_text(y, encoding="utf-8")
