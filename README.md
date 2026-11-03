@@ -35,4 +35,4 @@ macOS 的 `base64` 若不支持 `-w0`，可改用 `base64 < safari.p12 | tr -d '
 
 通过 Apktool 3.0.3 修改 Launcher 相关的 Manifest 图标与名称、更新配置地址及 APK versionCode。构建后采用 `zipalign` 和 `apksigner` 验证。Release 先发布，成功后才更新公开的 `latest_cn.json`（APK 链接及 MD5 都指向魔改版）。
 
-图标文件 `assets/safari26.png` 来自 [kkkik/iOS26](https://github.com/kkkik/iOS26) 的 `com.apple.mobilesafari-large.png` 提取版。相关商标及图标归原权利人所有。请备份原 Via 浏览器的数据再进行覆盖安装。
+构建时优先使用 [The Apple Wiki](https://theapplewiki.com/images/applewiki/b/b0/Safari_26_icon.png) 提供的 1024×1024 Safari 26 图标；若下载失败则回落至仓库已包含的图标。\n\n图标文件 `assets/safari26.png` 来自 [kkkik/iOS26](https://github.com/kkkik/iOS26) 的 `com.apple.mobilesafari-large.png` 提取版。相关商标及图标归原权利人所有。请备份原 Via 浏览器的数据再进行覆盖安装。
