@@ -86,17 +86,23 @@ jobs:
           # Guard against an upstream JSON updated before its APK download.
           python3 - <<'PY'
           import pathlib
+          import re
           import xml.etree.ElementTree as ET
 
           expected = "${{ needs.check.outputs.version }}"
           root = ET.parse("work/decoded/AndroidManifest.xml").getroot()
-          actual = root.get("{http://schemas.android.com/apk/res/android}versionCode")
-          version_name = root.get("{http://schemas.android.com/apk/res/android}versionName")
           if root.get("package") != "mark.via":
               raise ValueError(f"Unexpected official APK package: {root.get('package')}")
+          # Apktool stores the original versionCode in apktool.yml; the
+          # decoded Manifest need not include the versionCode attribute.
+          metadata = pathlib.Path("work/decoded/apktool.yml").read_text(encoding="utf-8")
+          matches = re.findall(r"(?m)^\\s*versionCode:\\s*['\\\"]?([0-9]+)['\\\"]?\\s*$", metadata)
+          if len(matches) != 1:
+              raise ValueError(f"Expected one numeric apktool.yml versionCode, got {matches}")
+          actual = matches[0]
           if actual != expected:
               raise ValueError(f"Official JSON versionCode={expected}, but APK versionCode={actual}; refusing mismatched download")
-          print(f"Official Via APK verified: versionCode={actual}, versionName={version_name}")
+          print(f"Official Via APK verified: versionCode={actual}")
           PY
           python3 scripts/prepare_icon.py
           python3 scripts/patch_apk.py --decoded work/decoded --version "${{ needs.check.outputs.version }}"
