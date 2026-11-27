@@ -1,6 +1,6 @@
 {
-  "version": 20261113,
-  "changelog": "v7.4.1\n- 优化网页翻译\n- 优化全屏播放\n- 优化脚本运行\n- 优化内建下载器\n- 优化规则加载\n- 新增设置搜索\n- 长按菜单新增自由复制\n- 长按菜单新增复制图片\n- 网页上传支持拍照\n- 部分错误修复",
-  "url": "https://github.com/Scluzlep/via-safari/releases/download/via-20261113/Safari.apk",
-  "md5": "68ec31a10d33297049e88446a4241ec3"
+  "version": 20261125,
+  "changelog": "v7.5.0\n- 翻译支持显示为双语\n- 添加标签切换反馈\n- 广告标记支持预览\n- 添加视频播放器手势设置\n- 添加主页搜索位置设置\n- 优化脚本加载\n- 修复视频播放器手势可能失效的错误\n- 修复密码填充栏可能被遮挡的错误\n- 修复部分过滤器无法加载的错误\n- 部分错误修复",
+  "url": "https://github.com/Scluzlep/via-safari/releases/download/via-20261125/Safari.apk",
+  "md5": "b16034159482317a3040399c19a02a6f"
 }
